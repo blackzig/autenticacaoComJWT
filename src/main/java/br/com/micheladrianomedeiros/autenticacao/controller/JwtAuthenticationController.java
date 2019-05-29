@@ -8,8 +8,8 @@ package br.com.micheladrianomedeiros.autenticacao.controller;
 import br.com.micheladrianomedeiros.autenticacao.config.JwtTokenUtil;
 import br.com.micheladrianomedeiros.autenticacao.model.JwtRequest;
 import br.com.micheladrianomedeiros.autenticacao.model.JwtResponse;
+import br.com.micheladrianomedeiros.autenticacao.model.UserDTO;
 import br.com.micheladrianomedeiros.autenticacao.service.JwtUserDetailsService;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @RestController
 @CrossOrigin
@@ -49,6 +48,11 @@ public class JwtAuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(token));
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+        return ResponseEntity.ok(userDetailsService.save(user));
     }
 
     private void authenticate(String username, String password) throws Exception {
